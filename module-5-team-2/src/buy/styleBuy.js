@@ -64,7 +64,7 @@ export const PriceText = styled.p`
   font-family: Roboto, sans-serif;
   font-style: normal;
   font-weight: normal;
-  font-size: 30px;
+  font-size: 48px;
   line-height: 14px;
   padding-top: 56px;
   padding-bottom: 66px;
