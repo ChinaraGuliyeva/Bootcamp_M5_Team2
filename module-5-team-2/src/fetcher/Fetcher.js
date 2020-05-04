@@ -129,14 +129,6 @@ export function getStockPricesFor(codes) {
     });
 }
 
-// данные об одной компании
-export function getOneStockData(code){
-  return fetch('https://financialmodelingprep.com/api/v3/company/profile/'+code)
-      .then(res => res.json())
-      .then(result => result)
-      .catch(() => 'Произошла ошибка во время загрузки данных');
-}
-
 // ___ ДЛЯ ДОПОЛНИТЕЛЬНОГО ЗАДАНИЯ ___
 // Функция, которая возвращает исторические данные для данного символа по датам
 export function getHistoricalPrices(code, startDate, endDate) {
@@ -147,7 +139,6 @@ export function getHistoricalPrices(code, startDate, endDate) {
 
 
 //Добавлено
-
 export function sellStock(stockId, teamId){
   fetch(
     `https://5e8da89e22d8cd0016a798db.mockapi.io/users/2/stocks/${stockId}`)
@@ -159,3 +150,11 @@ export function sellStock(stockId, teamId){
       .then (data => console.log(data.currentBalance));
 }
 
+
+// обновленные данные об одной конкретной компании - добавлено Маликой
+export function getOneStockData(code){
+  return fetch('https://financialmodelingprep.com/api/v3/company/profile/'+code)
+      .then(res => res.json())
+      .then(result => result)
+      .catch(() => 'Произошла ошибка во время загрузки данных');
+}

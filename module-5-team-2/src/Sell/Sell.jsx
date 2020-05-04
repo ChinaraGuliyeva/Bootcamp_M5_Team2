@@ -20,6 +20,7 @@ import arrow from "../img/arrow.svg";
 import {
     changeBalance,
     getUserBalance,
+    getUserStocks,
     getOneStockData
 } from "../fetcher/Fetcher";
 
@@ -30,24 +31,35 @@ class Sell extends React.Component {
         symbol: null,
         balance: null,
         pieces: "",
-        startDate: 0,
-        endDate: 0,
+        maxPieces: null,
         chartInfo: null,
         isAvailable: false,
     };
     componentDidMount() {
         window.scrollTo(0, 0);
         const { id } = this.props;
+        // получаем актуальные данные о цене акции
         getOneStockData(id).then(
             (res) => {
-                console.log(res);
                 const { companyName, price } = res.profile;
                 this.setState({ name: companyName, price: price, symbol: id })
             }
         )
+        // получаем с API balance и записываем в state 
         getUserBalance().then((result) => {
             this.setState({ balance: result.currentBalance });
-        }); // Записываю в state balance баланс с API
+        });
+
+        // получаем данные, сколько у пользователя пакетов этой акции
+        getUserStocks().then(
+            (res) => {
+                const filteredStocks = res.filter((item) => item.code === id);
+                let amountOfPieces = 0;
+                filteredStocks.forEach((item) => {
+                    amountOfPieces += item.amount;
+                });
+                this.setState({ maxPieces: amountOfPieces })
+            })
     }
 
     // Функция выделяющая числа после точки для ее уменьшения в стилях в дальнейшем
@@ -62,30 +74,28 @@ class Sell extends React.Component {
 
     // Функция увеличения значения в input
     handlerPlus = () => {
-        this.setState({ pieces: +this.state.pieces + 1 });
+        if (this.state.pieces < this.state.maxPieces) {
+            this.setState({ pieces: +this.state.pieces + 1 })
+        }
     };
 
     // Функция уменьшения значения в input
     handlerMinus = () => {
-        if (this.state.pieces <= 0) this.setState({ pieces: 0 });
-        else this.setState({ pieces: +this.state.pieces - 1 });
+        if (this.state.pieces > 0) {
+            this.setState({ pieces: +this.state.pieces - 1 })
+        }
     };
 
     //Функция отправки полученных данных на API команды начало ****
     sendToUserStock = () => {
-        const objectOfData = {
-            name: `${this.state.name}`,
-            price: `${this.state.price}`,
-            symbol: `${this.state.symbol}`,
-            pieces: `${this.state.pieces}`,
-        };
+
         const elements = this.state.pieces * this.state.price;
         if (elements <= 0 || this.state.pieces === "")
             return alert("Должно быть больше нуля");
         else {
             if (elements > this.state.balance) alert("Недостаточно средств");
             else {
-                const currentBalance = this.state.balance - elements;
+                const currentBalance = this.state.balance + elements;
                 changeBalance(currentBalance).then((res) =>
                     // обновить баланс в футере через коллбэк в App
                     this.props.getBalanceCallback()
