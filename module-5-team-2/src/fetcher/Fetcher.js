@@ -38,10 +38,19 @@ export function changeStock(updatedStock) {
 }
 //Функция запроса к серверу акций
 export function getStockData() {
-  return fetch(
-    "https://financialmodelingprep.com/api/v3/company/stock/list"
-  ).then((res) => res.json());
-}
+  return fetch('https://financialmodelingprep.com/api/v3/company/stock/list')
+    .then(res => res.text())
+    .then(data => {
+      // Пробуем распарсить полученные данные, если не получается - обрезаем
+      try {
+        return JSON.parse(data);
+      } catch (err) {
+        const lastRecStart = data.lastIndexOf('{');
+        const trimmedData = data.substr(0, lastRecStart - 2) + ']}';
+        return JSON.parse(trimmedData);
+      }
+    })
+  }
 
 //Функция получения списка акций пользователя
 export function getUserStocks() {
