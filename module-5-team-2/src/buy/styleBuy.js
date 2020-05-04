@@ -8,25 +8,25 @@ export const MainBuy = styled.div`
   width: 100%;
   text-align: center;
 `;
+
 export const CentralBlock = styled.div`
   a {
     text-decoration: none;
   }
-  a p {
+  a button {
     width: 170px;
     padding: 15px 20px;
     border: 3px solid #833ae0;
     border-radius: 49px;
     color: #833ae0;
+    background-color: transparent;
     margin: 0 auto;
+    font-size: 24px;
   }
-  a p:hover {
+  a button:hover {
     background-color: blueviolet;
     border: 3px solid #ffffff;
     color: #ffffff;
-  }
-  span {
-    font-size: 15px;
   }
 `;
 export const TestBlock = styled.div`
@@ -34,41 +34,54 @@ export const TestBlock = styled.div`
 `;
 export const HeaderBuy = styled.div`
   display: flex;
+  align-items: center;
   width: 100%;
-  /* padding-bottom: 56px;
-  padding-top: 30px; */
   padding: 30px 30px 56px 30px;
+
   -webkit-box-shadow: 0px 6px 6px -6px gray;
   -moz-box-shadow: 0px 6px 6px -6px gray;
   box-shadow: 0px 6px 6px -6px gray;
   a {
     text-decoration: none;
     color: blueviolet;
-    font-size: 18px;
+    font-size: 24px;
+    margin: 0px 20px;
+    width: 100px;
   }
   a:hover {
     text-decoration: underline;
   }
   h2 {
+    font-weight: normal;
     text-align: center;
     word-break: break-word;
-    font-size: 28px;
+    font-size: 48px;
     flex-basis: 92%;
     color: #2fc20a;
+    margin-right: 100px;
   }
   img {
-    width: 12px;
+    width: 16px;
   }
 `;
 export const PriceText = styled.p`
+  display: inline;
   font-family: Roboto, sans-serif;
   font-style: normal;
   font-weight: normal;
-  font-size: 48px;
-  line-height: 14px;
-  padding-top: 56px;
-  padding-bottom: 66px;
+  font-size: 30px;
+  span {
+      font-size: 20px;
+  }
 `;
+
+export const PriceBox = styled.div `
+  height: 125px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  `
+
 export const BuyFor = styled.p`
   font-family: Roboto, sans-serif;
   font-size: 20px;
@@ -82,11 +95,17 @@ export const InputBlock = styled.div`
   align-items: center;
   width: 100%;
   margin: 0 auto;
+
+  input {
+    color: blueviolet;
+    font-size: 64px;
+  }
+
   button {
     color: blueviolet;
     background-color: transparent;
     cursor: pointer;
-    font-size: 30px;
+    font-size: 36px;
     padding: 10px;
     border: none;
     outline: none;

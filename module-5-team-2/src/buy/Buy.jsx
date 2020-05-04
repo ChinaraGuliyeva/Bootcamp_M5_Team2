@@ -8,6 +8,7 @@ import {
   HeaderBuy,
   PriceText,
   BuyFor,
+  PriceBox,
   InputBlock,
   InputLenght,
 } from "./styleBuy";
@@ -45,7 +46,7 @@ class Buy extends React.Component {
     price: null,
     symbol: null,
     balance: null,
-    pieces: "",
+    pieces: 0,
     startDate: 0,
     endDate: 0,
     chartInfo: null,
@@ -102,7 +103,7 @@ class Buy extends React.Component {
       else {
         const currentBalance = this.state.balance - elements;
         changeBalance(currentBalance).then((res) =>
-        // обновить баланс в футере через коллбэк в App
+          // обновить баланс в футере через коллбэк в App
           this.props.getBalanceCallback()
         );
         addNewStock(objectOfData);
@@ -166,10 +167,12 @@ class Buy extends React.Component {
             <h2>Buy {this.state.name}</h2>
           </HeaderBuy>
           <CentralBlock>
-            <PriceText>
-              {Math.trunc(this.state.price)}
-              <span>{this.numberAfterDot(this.state.price)} $</span>
-            </PriceText>
+            <PriceBox>
+              <PriceText>
+                {Math.trunc(this.state.price)}
+                <span>{this.numberAfterDot(this.state.price)} $</span>
+              </PriceText>
+            </PriceBox>
             <InputBlock>
               <button onClick={this.handlerMinus}>-</button>
               <InputLenght
@@ -177,22 +180,21 @@ class Buy extends React.Component {
                 min="0"
                 onChange={this.changeValue}
                 value={this.state.pieces}
-                placeholder="0"
               />
               <button onClick={this.handlerPlus}>+</button>
             </InputBlock>
             <BuyFor>
-              Buy for {Math.trunc(this.state.pieces * this.state.price)}
-              <span>
-                {this.numberAfterDot(this.state.pieces * this.state.price)} $
-              </span>
+              Buy for 
+              <PriceText> {Math.trunc(this.state.pieces * this.state.price)} 
+              <span> {this.numberAfterDot(this.state.pieces * this.state.price)} $
+              </span> </PriceText>
             </BuyFor>
             <Link
               to={{
                 pathname:
                   this.state.pieces <= 0 ||
-                  this.state.pieces === "" ||
-                  this.state.pieces * this.state.price > this.state.balance
+                    this.state.pieces === "" ||
+                    this.state.pieces * this.state.price > this.state.balance
                     ? "/Buy"
                     : "/Stock",
                 state: {
@@ -202,7 +204,7 @@ class Buy extends React.Component {
                 },
               }}
             >
-              <p onClick={this.sendToUserStock}>Buy</p>
+              <button onClick={this.sendToUserStock}>Buy</button>
             </Link>
 
             <ChartContainer>

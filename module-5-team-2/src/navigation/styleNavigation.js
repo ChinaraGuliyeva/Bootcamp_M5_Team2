@@ -14,21 +14,25 @@ export const FooterBlock = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    p {
-      font-size: 22px;
-      line-height: 24px;
-      letter-spacing: 0.03em;
-      color: #ffdc40;
-    }
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 0.03em;
+    color: #ffdc40;
   }
 `;
 export const CurrentBalance = styled.p`
   font-size: 36px;
-  margin-right: 47%;
+  font-weight: normal;
+  width: 100%;
+  text-align: center;
+  margin-right: 100px;
   span {
-    font-size: 15px;
+    font-size: 22px;
   }
 `;
+//Стили Компонента Footer Конец
+
+
 export const HeaderBlock = styled.div`
   position: sticky;
   top: 0;
@@ -44,6 +48,7 @@ export const HeaderBlock = styled.div`
     justify-content: space-around;
     list-style: none;
     width: 30%;
+    font-size: 20px;
   }
   a {
     text-decoration: none;
@@ -57,4 +62,3 @@ export const HeaderBlock = styled.div`
     margin-bottom: -1px;
   }
 `;
-//Стили Компонента Footer Конец

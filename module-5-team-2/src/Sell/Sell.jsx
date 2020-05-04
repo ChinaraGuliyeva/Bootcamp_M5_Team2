@@ -5,6 +5,7 @@ import {
     MainBuy,
     TestBlock,
     PriceText,
+    PriceBox,
     BuyFor,
     InputLenght,
 } from "../buy/styleBuy";
@@ -30,7 +31,7 @@ class Sell extends React.Component {
         price: null,
         symbol: null,
         balance: null,
-        pieces: "",
+        pieces: 0,
         maxPieces: null,
         chartInfo: null,
         isAvailable: false,
@@ -124,15 +125,17 @@ class Sell extends React.Component {
                     <HeaderSell>
                         <Link to={"/Stock"}>
                             <img src={arrow} alt="arrow" />
-              Back
-            </Link>
+                               Back
+                        </Link>
                         <h2>Sell {this.state.name}</h2>
                     </HeaderSell>
                     <CentralBlockSell>
-                        <PriceText>
-                            {Math.trunc(this.state.price)}
-                            <span>{this.numberAfterDot(this.state.price)} $</span>
-                        </PriceText>
+                        <PriceBox>
+                            <PriceText>
+                                {Math.trunc(this.state.price)}
+                                <span>{this.numberAfterDot(this.state.price)} $</span>
+                            </PriceText>
+                        </PriceBox>
                         <InputBlockSell>
                             <button onClick={this.handlerMinus}>-</button>
                             <InputLenght
@@ -140,15 +143,14 @@ class Sell extends React.Component {
                                 min="0"
                                 onChange={this.changeValue}
                                 value={this.state.pieces}
-                                placeholder="0"
                             />
                             <button onClick={this.handlerPlus}>+</button>
                         </InputBlockSell>
                         <BuyFor>
-                            Sell for {Math.trunc(this.state.pieces * this.state.price)}
-                            <span>
-                                {this.numberAfterDot(this.state.pieces * this.state.price)} $
-              </span>
+                            Sell for
+                            <PriceText> {Math.trunc(this.state.pieces * this.state.price)}
+                                <span> {this.numberAfterDot(this.state.pieces * this.state.price)} $ </span>
+                            </PriceText>
                         </BuyFor>
                         <Link
                             to={{
