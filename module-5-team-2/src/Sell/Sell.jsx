@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import {
     MainBuy,
@@ -39,7 +39,7 @@ class Sell extends React.Component {
         pieces: 0,
         maxPieces: null,
         chartInfo: null,
-        isAvailable: false,
+        redirect: false,
         oldPrice: 0
     };
     componentDidMount() {
@@ -103,8 +103,7 @@ class Sell extends React.Component {
         let count = +this.state.pieces;
 
         if (count === +this.state.maxPieces) {
-            dltElementById(this.state.id)
-            .finally(() => this.props.getBalanceCallback());
+            dltElementById(this.state.id);
         } else {
             let stayCoun = this.state.maxPieces - this.state.pieces;
             let newTotalPrice = this.state.oldPrice * stayCoun;
@@ -112,25 +111,33 @@ class Sell extends React.Component {
                 amount: stayCoun,
                 totalPrice: newTotalPrice
             }
-            updateElementById(this.state.id, obj)
-            .finally(() => this.props.getBalanceCallback());
+            updateElementById(this.state.id, obj);
         }
 
         let newBalance = +this.state.balance + count * this.state.price
         updateBalance(newBalance)
-            .finally(() => this.props.getBalanceCallback())
+            .finally(() => {
+                this.setState({ redirect: true })
+                this.props.getBalanceCallback()
+            })
 
     };
     //Функция отправки полученных данных на API команды конец ****
 
     // Функция записывающая текущее значение value input в state pieces
     changeValue = (e) => {
-        this.setState({ pieces: e.target.value });
+        let val = e.target.value;
+        if (val >= 0 && val <= this.state.maxPieces) {
+            this.setState({ pieces: e.target.value });
+        } else if (val >= this.state.maxPieces) {
+            this.setState({ pieces: this.state.maxPieces });
+        }
+
         if (e.target.value.length === 0) e.target.style.width = `100px`;
         else {
             e.target.style.width = (e.target.value.length + 20) * 8 + "px"; // Динамическое расширение и уменьшения поля input в зависимости от введенного значения
         }
-        parseInt(e.target.value);
+        // parseInt(e.target.value);
     };
 
     render() {
@@ -158,6 +165,7 @@ class Sell extends React.Component {
                                 min="0"
                                 onChange={this.changeValue}
                                 value={this.state.pieces}
+                                placeholder="0"
                             />
                             <button onClick={this.handlerPlus}>+</button>
                         </InputBlockSell>
@@ -167,23 +175,9 @@ class Sell extends React.Component {
                                 <span> {this.numberAfterDot(this.state.pieces * this.state.price)} $ </span>
                             </PriceText>
                         </BuyFor>
-                        <Link
-                            to={{
-                                pathname:
-                                    this.state.pieces <= 0 ||
-                                        this.state.pieces === "" ||
-                                        this.state.pieces * this.state.price > this.state.balance
-                                        ? `/sell/${this.props.lnk}`
-                                        : "/sell",
-                                state: {
-                                    symbol: this.state.symbol,
-                                    name: this.state.name,
-                                    price: this.state.price,
-                                },
-                            }}
-                        >
-                            <button onClick={this.sellShares}>Sell</button>
-                        </Link>
+
+                        <button id='sell' onClick={this.sellShares}>Sell</button>
+                        {!this.state.redirect ? null : (<Redirect to="/sell" />)}
 
                     </CentralBlockSell>
                 </MainBuy>

@@ -11,11 +11,19 @@ export const HeaderSell = styled(HeaderBuy)`
   }`;
 
 export const CentralBlockSell = styled(CentralBlock)`
-  a button {
+  #sell {
+    width: 170px;
+    padding: 15px 20px;
+    border-radius: 49px;
+    background-color: transparent;
+    margin: 0 auto;
+    font-size: 24px;
     border: 3px solid red;
     color: red;
+    cursor: pointer;
+    outline: none;
   }
-  a button:hover {
+   #sell:hover {
     background-color: red;
     border: 3px solid #ffffff;
     color: #ffffff;
