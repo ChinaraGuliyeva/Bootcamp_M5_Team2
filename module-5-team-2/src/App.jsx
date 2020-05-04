@@ -40,7 +40,7 @@ class App extends Component {
   };
 
   sellHandler = (id, amount) => {    // отправка данных для фетч запросв
-    fetcher.sellStock(id, balance, amount)
+    fetcher.sellStock(id, this.state.balance, amount)
         .then(() => {alert('Успешно продано!')})
         .catch(console.log);
   }
