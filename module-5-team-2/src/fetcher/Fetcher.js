@@ -127,3 +127,16 @@ export function getHistoricalPrices(code, startDate, endDate) {
     `https://financialmodelingprep.com/api/v3/historical-price-full/${code}?from=${startDate}&to=${endDate}`
   ).then((res) => res.json());
 }
+
+//Добавлено
+
+export function sellStock(stockId, teamId){
+  fetch(
+    `https://5e8da89e22d8cd0016a798db.mockapi.io/users/2/stocks/${stockId}`)
+      .then(res => res.json())
+      .then (data => console.log(data));
+  fetch(
+     `https://5e8da89e22d8cd0016a798db.mockapi.io/users/${teamId}`)
+      .then(res => res.json())
+      .then (data => console.log(data.currentBalance));
+}
