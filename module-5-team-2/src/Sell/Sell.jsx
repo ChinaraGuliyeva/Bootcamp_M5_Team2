@@ -39,17 +39,17 @@ class Sell extends React.Component {
   };
   componentDidMount() {
     window.scrollTo(0, 0);
-    const { name, price, symbol } = this.props.location.state; //Беру state из тега Link в компоненте Stock
-    if (!this.state.name) {
-      this.setState({ name: name, price: price, symbol: symbol }, () => {
-        const todayDate = new Date().getDate();
-        const weekAgo = new Date(new Date().setDate(todayDate - 7));
+    // const { name, price, symbol } = this.props.location.state; //Беру state из тега Link в компоненте Stock
+    // if (!this.state.name) {
+    //   this.setState({ name: name, price: price, symbol: symbol }, () => {
+    //     const todayDate = new Date().getDate();
+    //     const weekAgo = new Date(new Date().setDate(todayDate - 7));
 
-        this.handleStartDate(weekAgo.toISOString().substring(0, 10));
-        this.handleEndDate(new Date().toISOString().substring(0, 10));
-        this.showChart();
-      }); // Записываю их в state текущего компонента
-    }
+    //     this.handleStartDate(weekAgo.toISOString().substring(0, 10));
+    //     this.handleEndDate(new Date().toISOString().substring(0, 10));
+    //     this.showChart();
+    //   }); // Записываю их в state текущего компонента
+    // }
     getUserBalance().then((result) => {
       this.setState({ balance: result.currentBalance });
     }); // Записываю в state balance баланс с API
@@ -148,7 +148,7 @@ class Sell extends React.Component {
               <img src={arrow} alt="arrow" />
               Back
             </Link>
-            <h2>Buy {this.state.name}</h2>
+            <h2>Sell {this.state.name}</h2>
           </HeaderSell>
           <CentralBlockSell>
             <PriceText>
@@ -187,7 +187,7 @@ class Sell extends React.Component {
                 },
               }}
             >
-              <button onClick={this.sendToUserStock}>Buy</button>
+              <button onClick={this.sendToUserStock}>Sell</button>
             </Link>
 
           </CentralBlockSell>
