@@ -129,6 +129,14 @@ export function getStockPricesFor(codes) {
     });
 }
 
+// данные об одной компании
+export function getOneStockData(code){
+  return fetch('https://financialmodelingprep.com/api/v3/company/profile/'+code)
+      .then(res => res.json())
+      .then(result => result)
+      .catch(() => 'Произошла ошибка во время загрузки данных');
+}
+
 // ___ ДЛЯ ДОПОЛНИТЕЛЬНОГО ЗАДАНИЯ ___
 // Функция, которая возвращает исторические данные для данного символа по датам
 export function getHistoricalPrices(code, startDate, endDate) {
@@ -136,3 +144,4 @@ export function getHistoricalPrices(code, startDate, endDate) {
     `https://financialmodelingprep.com/api/v3/historical-price-full/${code}?from=${startDate}&to=${endDate}`
   ).then((res) => res.json());
 }
+

@@ -113,7 +113,7 @@ class Buy extends React.Component {
 
   //Функция отправки полученных данных на API команды конец ****
 
-  // Функция записывающая текущее значение value input  в state pieces
+  // Функция записывающая текущее значение value input в state pieces
   changeValue = (e) => {
     this.setState({ pieces: e.target.value });
     if (e.target.value.length === 0) e.target.style.width = `100px`;
