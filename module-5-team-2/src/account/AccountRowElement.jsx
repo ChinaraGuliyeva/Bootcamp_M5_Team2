@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
     DecPartSpan,
     RowContainer,
@@ -9,7 +9,7 @@ import {
     RowElemSumDiv,
     RowElemProfitDiv,
 } from "./styleRowElement";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 class RowElement extends Component {
     constructor(props) {
@@ -27,9 +27,9 @@ class RowElement extends Component {
     };
 
     render() {
-        const {code, name, amount, purchasePrice, profit, sign} = this.props;
+        const { id, code, name, amount, purchasePrice, profit, sign } = this.props;
         return (
-            <NavLink style={{textDecoration: 'none', color: 'inherit'}} to={"/sell/" + code}>
+            <NavLink style={{ textDecoration: 'none', color: 'inherit' }} to={"/sell/" + id + '=' + code}>
                 <RowContainer>
                     <Row>
                         {" "}

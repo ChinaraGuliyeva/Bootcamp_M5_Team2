@@ -40,13 +40,14 @@ class App extends Component {
     });
   };
 
-  sellHandler = (id, amount) => {    // отправка данных для фетч запросв
-    // fetcher.sellStock(id, this.state.balance, amount)
-    //     .then(() => {alert('Успешно продано!')})
-    //     .catch(console.log);
-  }
+  // sellHandler = (id, amount) => {    // отправка данных для фетч запросв
+  //   // fetcher.sellStock(id, this.state.balance, amount)
+  //   //     .then(() => {alert('Успешно продано!')})
+  //   //     .catch(console.log);
+  // }
 
   render() {
+    console.log("Componenent  UPDATE");
     return (
       <AppBlock>
         <Router>
@@ -61,8 +62,8 @@ class App extends Component {
               )}
             />
             <Route // рендеринг страницы продажи акции. в компонент передаётся символ акции
-                path="/sell/:id"
-                render={props => <Sell {...props.match.params} onClick={this.sellHandler}/>
+                path="/sell/:lnk"
+                render={props => <Sell {...props.match.params} getBalanceCallback={this.getUserBalance} onClick={this.sellHandler}/>
                 }
             />
             <Route path="/" component={Account} />

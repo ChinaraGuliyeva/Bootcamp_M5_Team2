@@ -22,11 +22,16 @@ import {
     changeBalance,
     getUserBalance,
     getUserStocks,
-    getOneStockData
+    getOneStockData,
+    getOneUserStockData,
+    dltElementById,
+    updateElementById,
+    updateBalance
 } from "../fetcher/Fetcher";
 
 class Sell extends React.Component {
     state = {
+        id: null,
         name: null,
         price: null,
         symbol: null,
@@ -35,15 +40,20 @@ class Sell extends React.Component {
         maxPieces: null,
         chartInfo: null,
         isAvailable: false,
+        oldPrice: 0
     };
     componentDidMount() {
         window.scrollTo(0, 0);
-        const { id } = this.props;
+        const { lnk } = this.props;
+        let arr = lnk.split('=')
+
+        this.setState({ id: arr[0] })
         // получаем актуальные данные о цене акции
-        getOneStockData(id).then(
+        getOneStockData(arr[1]).then(
             (res) => {
+                // console.log(res)
                 const { companyName, price } = res.profile;
-                this.setState({ name: companyName, price: price, symbol: id })
+                this.setState({ name: companyName, price: price, symbol: arr[1] })
             }
         )
         // получаем с API balance и записываем в state 
@@ -52,14 +62,14 @@ class Sell extends React.Component {
         });
 
         // получаем данные, сколько у пользователя пакетов этой акции
-        getUserStocks().then(
+        getOneUserStockData(arr[0]).then(
             (res) => {
-                const filteredStocks = res.filter((item) => item.code === id);
-                let amountOfPieces = 0;
-                filteredStocks.forEach((item) => {
-                    amountOfPieces += item.amount;
-                });
-                this.setState({ maxPieces: amountOfPieces })
+                let count = res.amount;
+                // console.log("Count: " + count);
+                this.setState({
+                    maxPieces: count,
+                    oldPrice: res.totalPrice / count
+                })
             })
     }
 
@@ -88,23 +98,28 @@ class Sell extends React.Component {
     };
 
     //Функция отправки полученных данных на API команды начало ****
-    sendToUserStock = () => {
 
-        const elements = this.state.pieces * this.state.price;
-        if (elements <= 0 || this.state.pieces === "")
-            return alert("Должно быть больше нуля");
-        else {
-            if (elements > this.state.balance) alert("Недостаточно средств");
-            else {
-                const currentBalance = this.state.balance + elements;
-                changeBalance(currentBalance).then((res) =>
-                    // обновить баланс в футере через коллбэк в App
-                    this.props.getBalanceCallback()
-                );
-                // addNewStock(objectOfData); здесь нужно добавить функцию продажи акции 
-                console.log(this.props.getBalanceCallback);
+    sellShares = () => {
+        let count = +this.state.pieces;
+
+        if (count === +this.state.maxPieces) {
+            dltElementById(this.state.id)
+            .finally(() => this.props.getBalanceCallback());
+        } else {
+            let stayCoun = this.state.maxPieces - this.state.pieces;
+            let newTotalPrice = this.state.oldPrice * stayCoun;
+            let obj = {
+                amount: stayCoun,
+                totalPrice: newTotalPrice
             }
+            updateElementById(this.state.id, obj)
+            .finally(() => this.props.getBalanceCallback());
         }
+
+        let newBalance = +this.state.balance + count * this.state.price
+        updateBalance(newBalance)
+            .finally(() => this.props.getBalanceCallback())
+
     };
     //Функция отправки полученных данных на API команды конец ****
 
@@ -123,7 +138,7 @@ class Sell extends React.Component {
             <TestBlock>
                 <MainBuy>
                     <HeaderSell>
-                        <Link to={"/Stock"}>
+                        <Link to={"/Account"}>
                             <img src={arrow} alt="arrow" />
                                Back
                         </Link>
@@ -158,8 +173,8 @@ class Sell extends React.Component {
                                     this.state.pieces <= 0 ||
                                         this.state.pieces === "" ||
                                         this.state.pieces * this.state.price > this.state.balance
-                                        ? "/Buy"
-                                        : "/Stock",
+                                        ? `/sell/${this.props.lnk}`
+                                        : "/sell",
                                 state: {
                                     symbol: this.state.symbol,
                                     name: this.state.name,
@@ -167,7 +182,7 @@ class Sell extends React.Component {
                                 },
                             }}
                         >
-                            <button onClick={this.sendToUserStock}>Sell</button>
+                            <button onClick={this.sellShares}>Sell</button>
                         </Link>
 
                     </CentralBlockSell>

@@ -23,7 +23,7 @@ export function changeBalance(newSumm) {
 export function changeStock(updatedStock) {
   fetch(
     "https://5e8da89e22d8cd0016a798db.mockapi.io/users/2/stocks/" +
-      updatedStock.id,
+    updatedStock.id,
     {
       method: "PUT",
       body: JSON.stringify({
@@ -50,7 +50,7 @@ export function getStockData() {
         return JSON.parse(trimmedData);
       }
     })
-  }
+}
 
 //Функция получения списка акций пользователя
 export function getUserStocks() {
@@ -139,22 +139,57 @@ export function getHistoricalPrices(code, startDate, endDate) {
 
 
 //Добавлено
-export function sellStock(stockId, teamId){
+export function sellStock(stockId, teamId) {
   fetch(
     `https://5e8da89e22d8cd0016a798db.mockapi.io/users/2/stocks/${stockId}`)
-      .then(res => res.json())
-      .then (data => console.log(data));
+    .then(res => res.json())
+    .then(data => console.log(data));
   fetch(
-     `https://5e8da89e22d8cd0016a798db.mockapi.io/users/${teamId}`)
-      .then(res => res.json())
-      .then (data => console.log(data.currentBalance));
+    `https://5e8da89e22d8cd0016a798db.mockapi.io/users/${teamId}`)
+    .then(res => res.json())
+    .then(data => console.log(data.currentBalance));
 }
 
 
 // обновленные данные об одной конкретной компании - добавлено Маликой
-export function getOneStockData(code){
-  return fetch('https://financialmodelingprep.com/api/v3/company/profile/'+code)
-      .then(res => res.json())
-      .then(result => result)
-      .catch(() => 'Произошла ошибка во время загрузки данных');
+export function getOneStockData(code) {
+  return fetch('https://financialmodelingprep.com/api/v3/company/profile/' + code)
+    .then(res => res.json())
+    .then(result => result)
+    .catch(() => 'Произошла ошибка во время загрузки данных');
+}
+
+export async function getOneUserStockData(id) {
+  return await fetch('https://5e8da89e22d8cd0016a798db.mockapi.io/users/2/stocks/' + id)
+    .then(res => res.json())
+    .then(result => result)
+    .catch(() => 'Произошла ошибка во время загрузки данных');
+}
+
+export async function dltElementById(id) {
+   await fetch(`https://5e8da89e22d8cd0016a798db.mockapi.io/users/2/stocks/${id}`, { method: 'DELETE' });
+}
+
+export async function updateElementById(id, obj) {
+  fetch(`https://5e8da89e22d8cd0016a798db.mockapi.io/users/2/stocks/${id}`,
+    {
+      method: 'PUT',
+      body: JSON.stringify(obj), // данные могут быть 'строкой' или {объектом}!
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8'
+      }
+    })
+}
+
+export async function updateBalance(updateBalance) {
+  await fetch(`https://5e8da89e22d8cd0016a798db.mockapi.io/users/2`,
+    {
+      method: 'PUT',
+      body: JSON.stringify({
+        currentBalance: updateBalance
+      }), // данные могут быть 'строкой' или {объектом}!
+      headers: {
+        'Content-Type': 'application/json; charset=UTF-8'
+      }
+    })
 }
