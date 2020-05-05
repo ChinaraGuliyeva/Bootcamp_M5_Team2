@@ -195,7 +195,7 @@ class Sell extends React.Component {
                         </BuyFor>
 
                         <button id='sell' onClick={() => {
-                            if (this.state.pieces !== 0) {
+                            if (this.state.pieces !== 0 && this.state.pieces !== '') {
                                 this.setState({ popup: true })
                             }}}>Sell</button>
                         {!this.state.redirect ? null : (<Redirect to="/sell" />)}
