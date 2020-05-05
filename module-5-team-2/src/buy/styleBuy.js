@@ -78,6 +78,7 @@ export const PriceText = styled.p`
 export const PriceBox = styled.div `
   height: 125px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   `

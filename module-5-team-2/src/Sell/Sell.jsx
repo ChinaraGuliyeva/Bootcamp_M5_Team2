@@ -157,6 +157,7 @@ class Sell extends React.Component {
                                 {Math.trunc(this.state.price)}
                                 <span>{this.numberAfterDot(this.state.price)} $</span>
                             </PriceText>
+                            <p>Available: {this.state.maxPieces}</p>
                         </PriceBox>
                         <InputBlockSell>
                             <button onClick={this.handlerMinus}>-</button>
