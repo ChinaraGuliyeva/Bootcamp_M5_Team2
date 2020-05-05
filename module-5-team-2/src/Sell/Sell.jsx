@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
+import Style from './sell.module.scss'
 
 import {
     MainBuy,
@@ -19,9 +20,7 @@ import {
 import "react-datepicker/dist/react-datepicker.css";
 import arrow from "../img/arrow.svg";
 import {
-    changeBalance,
     getUserBalance,
-    getUserStocks,
     getOneStockData,
     getOneUserStockData,
     dltElementById,
@@ -40,6 +39,7 @@ class Sell extends React.Component {
         maxPieces: null,
         chartInfo: null,
         redirect: false,
+        popup: false,
         oldPrice: 0
     };
     componentDidMount() {
@@ -100,6 +100,7 @@ class Sell extends React.Component {
     //Функция отправки полученных данных на API команды начало ****
 
     sellShares = () => {
+        console.log("Hello")
         let count = +this.state.pieces;
 
         if (count === +this.state.maxPieces) {
@@ -140,9 +141,25 @@ class Sell extends React.Component {
         // parseInt(e.target.value);
     };
 
+
+    trueSell = () => {
+        this.sellShares();
+    }
+
     render() {
         return (
             <TestBlock>
+                {!this.state.popup ? null : (
+                    <div className={Style.popupContainer}>
+                        <div className={Style.childContainer}>
+                            <div className={Style.topDiv}><h2>Are you sure?</h2></div>
+                            <div className={Style.bottomDiv}>
+                                <button className={Style.green} onClick={this.trueSell}>Yes</button>
+                                <button className={Style.gray} onClick={() => this.setState({ popup: false })}>No</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
                 <MainBuy>
                     <HeaderSell>
                         <Link to={"/Account"}>
@@ -177,7 +194,10 @@ class Sell extends React.Component {
                             </PriceText>
                         </BuyFor>
 
-                        <button id='sell' onClick={this.sellShares}>Sell</button>
+                        <button id='sell' onClick={() => {
+                            if (this.state.pieces !== 0) {
+                                this.setState({ popup: true })
+                            }}}>Sell</button>
                         {!this.state.redirect ? null : (<Redirect to="/sell" />)}
 
                     </CentralBlockSell>

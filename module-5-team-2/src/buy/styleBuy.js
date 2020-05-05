@@ -83,7 +83,7 @@ export const PriceBox = styled.div `
   align-items: center;
   `
 
-export const BuyFor = styled.p`
+export const BuyFor = styled.div`
   font-family: Roboto, sans-serif;
   font-size: 20px;
   line-height: 14px;
